@@ -23,8 +23,12 @@ export class CardPageComponent implements OnInit {
         let company = _.find(this.companies || [], c => c.id == id);
         return company && company.name;
     }
+    searchTerm: string = "";
     getCards() {
-        this.cards = this.cardService.getCards({ page: this.currentPage });
+        this.cards = this.cardService.getCards({
+            page: this.currentPage,
+            searchTerm: this.searchTerm
+        });
         this.cards.subscribe(r => {
             this.maxPages = Math.ceil(r.allResults / 5);
             this.currentPage = r.page;

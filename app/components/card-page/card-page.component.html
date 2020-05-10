@@ -1,6 +1,7 @@
 ﻿<div class="col-lg-5 panel panel-info">
     <div class="panel-body">
-        <input class="form-control" placeholder="Filter cards...">
+        <input class="form-control" placeholder="Filter cards..." [(ngModel)]="searchTerm"
+            (keyup.enter)="currentPage=0;getCards()">
         <!-- Here comes the list of cards. -->
         <div class="cards-list">
             <a *ngFor="let card of (cards | async)?.results" [class.active]="card === selectedCard"

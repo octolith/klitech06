@@ -25,6 +25,7 @@ var CardPageComponent = (function () {
     function CardPageComponent(cardService, companyService) {
         this.cardService = cardService;
         this.companyService = companyService;
+        this.searchTerm = "";
         this.currentPage = 0;
         this.maxPages = 0;
         this.editing = false;
@@ -40,7 +41,10 @@ var CardPageComponent = (function () {
     };
     CardPageComponent.prototype.getCards = function () {
         var _this = this;
-        this.cards = this.cardService.getCards({ page: this.currentPage });
+        this.cards = this.cardService.getCards({
+            page: this.currentPage,
+            searchTerm: this.searchTerm
+        });
         this.cards.subscribe(function (r) {
             _this.maxPages = Math.ceil(r.allResults / 5);
             _this.currentPage = r.page;
