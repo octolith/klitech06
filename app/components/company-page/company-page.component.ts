@@ -27,9 +27,22 @@ export class CompanyPageComponent implements OnInit {
         });
     }
     selectedCompany: Company;
+    originalCompany: Company;
+    editing: boolean = false;
     cards: Card[];
     companies: Observable<Company[]>;
     getCompanies() {
         this.companies = this.companyService.getCompanies();
+    }
+    editCompany() {
+        this.editing = true;
+    }
+    saveCard(company: Company) {
+        this.companyService.addOrUpdateCompany(company)
+            .subscribe(() => {
+                this.editing = false;
+                this.getCompanies();
+                this.selectedCompany = undefined;
+            });
     }
 }

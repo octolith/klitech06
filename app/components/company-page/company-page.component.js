@@ -18,6 +18,7 @@ var CompanyPageComponent = (function () {
         this.companyService = companyService;
         this.cardService = cardService;
         this.route = route;
+        this.editing = false;
     }
     CompanyPageComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -31,6 +32,18 @@ var CompanyPageComponent = (function () {
     };
     CompanyPageComponent.prototype.getCompanies = function () {
         this.companies = this.companyService.getCompanies();
+    };
+    CompanyPageComponent.prototype.editCompany = function () {
+        this.editing = true;
+    };
+    CompanyPageComponent.prototype.saveCard = function (company) {
+        var _this = this;
+        this.companyService.addOrUpdateCompany(company)
+            .subscribe(function () {
+            _this.editing = false;
+            _this.getCompanies();
+            _this.selectedCompany = undefined;
+        });
     };
     return CompanyPageComponent;
 }());
