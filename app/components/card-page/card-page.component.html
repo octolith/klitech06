@@ -3,9 +3,10 @@
         <input class="form-control" placeholder="Filter cards...">
         <!-- Here comes the list of cards. -->
         <div class="cards-list">
-            <a *ngFor="let card of (cards | async)?.results" [class.active]="card === selectedCard" (click)="selectedCard = card">
+            <a *ngFor="let card of (cards | async)?.results" [class.active]="card === selectedCard"
+                (click)="selectedCard = card">
                 <h6 class="text-info">{{card.firstName}} {{card.lastName}}
-                    (<i>{{card.companyId}}</i>)</h6>
+                    (<i>{{getCompanyName(card.companyId)}}</i>)</h6>
             </a>
         </div>
         <div class="paging">
@@ -21,10 +22,10 @@
     <!-- Here comes the selected or newly created card's editor / detail. -->
     <div class="panel-body">
         <img class="profile-picture pull-right" [src]="selectedCard.imageUrl">
-        <h4 class="text-warning">  
+        <h4 class="text-warning">
             {{selectedCard.firstName}} {{selectedCard.lastName}}</h4>
-        <h6 class="text-warning"><b>{{selectedCard.role}}</b> 
-            at <b><a>{{selectedCard.companyId}}</a></b></h6>
+        <h6 class="text-warning"><b>{{selectedCard.role}}</b>
+            at <b><a>{{getCompanyName(selectedCard.companyId)}}</a></b></h6>
         <p class="text-info">{{selectedCard.motto}}</p>
     </div>
 </div>

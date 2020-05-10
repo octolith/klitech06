@@ -11,12 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var card_service_1 = require("../../services/card.service");
+var company_service_1 = require("../../services/company.service");
+var _ = require("lodash");
 var CardPageComponent = (function () {
-    function CardPageComponent(cardService) {
+    function CardPageComponent(cardService, companyService) {
         this.cardService = cardService;
+        this.companyService = companyService;
     }
     CardPageComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.getCards();
+        this.companyService.getCompanies().subscribe(function (cmp) { return _this.companies = cmp; });
+    };
+    CardPageComponent.prototype.getCompanyName = function (id) {
+        var company = _.find(this.companies || [], function (c) { return c.id == id; });
+        return company && company.name;
     };
     CardPageComponent.prototype.getCards = function () {
         this.cards = this.cardService.getCards();
@@ -28,7 +37,8 @@ CardPageComponent = __decorate([
         selector: "card-page",
         templateUrl: "./card-page.component.html"
     }),
-    __metadata("design:paramtypes", [card_service_1.CardService])
+    __metadata("design:paramtypes", [card_service_1.CardService,
+        company_service_1.CompanyService])
 ], CardPageComponent);
 exports.CardPageComponent = CardPageComponent;
 //# sourceMappingURL=card-page.component.js.map
