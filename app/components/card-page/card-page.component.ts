@@ -11,6 +11,14 @@ import * as _ from "lodash";
     selector: "card-page",
     templateUrl: "./card-page.component.html"
 })
-export class CardPageComponent {
-    
+export class CardPageComponent implements OnInit {
+    constructor(private cardService: CardService) { }
+    ngOnInit() {
+        this.getCards();
+    }
+    getCards() {
+        this.cards = this.cardService.getCards();
+    }
+    cards: Observable<SearchResult<Card>>;
+    selectedCard: Card;
 }
