@@ -36,7 +36,7 @@ export class CompanyPageComponent implements OnInit {
     editCompany() {
         this.editing = true;
     }
-    saveCard(company: Company) {
+    saveCompany(company: Company) {
         this.companyService.addOrUpdateCompany(company)
             .subscribe(() => {
                 this.editing = false;

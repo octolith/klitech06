@@ -36,7 +36,7 @@ var CompanyPageComponent = (function () {
     CompanyPageComponent.prototype.editCompany = function () {
         this.editing = true;
     };
-    CompanyPageComponent.prototype.saveCard = function (company) {
+    CompanyPageComponent.prototype.saveCompany = function (company) {
         var _this = this;
         this.companyService.addOrUpdateCompany(company)
             .subscribe(function () {
