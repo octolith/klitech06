@@ -14,16 +14,21 @@ import * as _ from "lodash";
 export class CardPageComponent implements OnInit {
     constructor(private cardService: CardService,
         private companyService: CompanyService) { }
-    ngOnInit() {
+    
+        ngOnInit() {
         this.getCards();
         this.companyService.getCompanies().subscribe(cmp => this.companies = cmp);
     }
+    
     companies: Company[];
+    
     getCompanyName(id: number) {
         let company = _.find(this.companies || [], c => c.id == id);
         return company && company.name;
     }
+
     searchTerm: string = "";
+
     getCards() {
         this.cards = this.cardService.getCards({
             page: this.currentPage,
@@ -34,6 +39,7 @@ export class CardPageComponent implements OnInit {
             this.currentPage = r.page;
         });
     }
+
     currentPage: number = 0;
     maxPages: number = 0;
     selectedCard: Card;

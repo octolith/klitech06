@@ -22,6 +22,7 @@ var CompanyPageComponent = (function () {
     }
     CompanyPageComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.getAllCards();
         this.getCompanies();
         this.route.params.subscribe(function (params) {
             var companyId = +params['id'];
@@ -30,8 +31,18 @@ var CompanyPageComponent = (function () {
             });
         });
     };
+    CompanyPageComponent.prototype.getAllCards = function () {
+        this.cards = this.cardService.getCards().map(function (r) { return r.results; });
+        console.log(this.cards.subscribe(function (e) { return e[0].firstName; }));
+    };
+    CompanyPageComponent.prototype.getCards = function (id) {
+        var _this = this;
+        var companyCards = this.cards.subscribe(function (card) { return card.find(function (c) { return c.companyId = _this.selectedCompany.id; }); });
+        return companyCards;
+    };
     CompanyPageComponent.prototype.getCompanies = function () {
         this.companies = this.companyService.getCompanies();
+        this.companies.subscribe();
     };
     CompanyPageComponent.prototype.editCompany = function () {
         this.editing = true;

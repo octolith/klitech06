@@ -1,12 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs/rx";
-import { Company } from "../../models/company.type";
-import { CardService } from "../../services/card.service";
-import { CompanyService } from "../../services/company.service";
-import { ActivatedRoute } from "@angular/router";
-import { SearchResult } from "../../models/search-result.type";
 import { Card } from "../../models/card.type";
+import { CardService } from "../../services/card.service";
+import { SearchResult } from "../../models/search-result.type";
+import { CompanyService } from "../../services/company.service";
+import { Company } from "../../models/company.type";
+import { ActivatedRoute } from "@angular/router";
 import * as _ from "lodash";
+import { createScope } from "@angular/core/src/profile/wtf_impl";
 
 @Component({
     selector: "company-page",
@@ -17,7 +18,8 @@ export class CompanyPageComponent implements OnInit {
         private cardService: CardService,
         private route: ActivatedRoute) { }
 
-    ngOnInit(): void {
+    ngOnInit(): void {        
+        this.getAllCards();
         this.getCompanies();
         this.route.params.subscribe(params => {
             let companyId = +params['id'];
@@ -28,10 +30,19 @@ export class CompanyPageComponent implements OnInit {
     }
     selectedCompany: Company;
     editing: boolean = false;
-    cards: Card[];
+    cards: Observable<Card[]>;
     companies: Observable<Company[]>;
+    getAllCards() {
+        this.cards = this.cardService.getCards().map(r => r.results);
+        console.log(this.cards.subscribe(e => e[0].firstName));
+    }
+    getCards(id: number) {
+        let companyCards = this.cards.subscribe(card => card.find(c => c.companyId = this.selectedCompany.id));
+        return companyCards;
+    }
     getCompanies() {
         this.companies = this.companyService.getCompanies();
+        this.companies.subscribe();
     }
     editCompany() {
         this.editing = true;
