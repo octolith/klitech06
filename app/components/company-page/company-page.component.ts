@@ -27,7 +27,6 @@ export class CompanyPageComponent implements OnInit {
         });
     }
     selectedCompany: Company;
-    originalCompany: Company;
     editing: boolean = false;
     cards: Card[];
     companies: Observable<Company[]>;
