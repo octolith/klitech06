@@ -1,4 +1,12 @@
 "use strict";
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17,6 +25,9 @@ var CardPageComponent = (function () {
     function CardPageComponent(cardService, companyService) {
         this.cardService = cardService;
         this.companyService = companyService;
+        this.currentPage = 0;
+        this.maxPages = 0;
+        this.editing = false;
     }
     CardPageComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -28,7 +39,43 @@ var CardPageComponent = (function () {
         return company && company.name;
     };
     CardPageComponent.prototype.getCards = function () {
-        this.cards = this.cardService.getCards();
+        var _this = this;
+        this.cards = this.cardService.getCards({ page: this.currentPage });
+        this.cards.subscribe(function (r) {
+            _this.maxPages = Math.ceil(r.allResults / 5);
+            _this.currentPage = r.page;
+        });
+    };
+    CardPageComponent.prototype.editCard = function () {
+        this.editing = true;
+        this.originalCard = this.selectedCard;
+        this.selectedCard = __assign({}, this.originalCard); // make a copy of the object
+    };
+    CardPageComponent.prototype.saveCard = function (card) {
+        var _this = this;
+        this.cardService.addOrUpdateCard(card)
+            .subscribe(function () {
+            _this.editing = false;
+            _this.getCards();
+            _this.selectedCard = undefined;
+            _this.originalCard = undefined;
+        });
+    };
+    CardPageComponent.prototype.cancel = function () {
+        this.editing = false;
+        this.selectedCard = this.originalCard;
+        this.originalCard = undefined;
+    };
+    CardPageComponent.prototype.confirmDelete = function () {
+        var _this = this;
+        if (confirm("Are you sure you want to delete card for \n        " + this.selectedCard.firstName + " " + this.selectedCard.lastName + "?")) {
+            this.cardService.deleteCard(this.selectedCard.id).subscribe(function () {
+                _this.editing = false;
+                _this.getCards();
+                _this.selectedCard = undefined;
+                _this.originalCard = undefined;
+            });
+        }
     };
     return CardPageComponent;
 }());
