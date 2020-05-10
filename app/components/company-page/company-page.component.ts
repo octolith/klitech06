@@ -18,13 +18,18 @@ export class CompanyPageComponent implements OnInit {
         private route: ActivatedRoute) { }
 
     ngOnInit(): void {
+        this.getCompanies();
         this.route.params.subscribe(params => {
             let companyId = +params['id'];
-            // TODO: get current company by ID
+            this.companies.subscribe(cmps => {
+                this.selectedCompany = cmps.find(cmp => cmp.id == companyId)
+            });
         });
     }
     selectedCompany: Company;
     cards: Card[];
     companies: Observable<Company[]>;
-   
+    getCompanies() {
+        this.companies = this.companyService.getCompanies();
+    }
 }

@@ -20,10 +20,17 @@ var CompanyPageComponent = (function () {
         this.route = route;
     }
     CompanyPageComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.getCompanies();
         this.route.params.subscribe(function (params) {
             var companyId = +params['id'];
-            // TODO: get current company by ID
+            _this.companies.subscribe(function (cmps) {
+                _this.selectedCompany = cmps.find(function (cmp) { return cmp.id == companyId; });
+            });
         });
+    };
+    CompanyPageComponent.prototype.getCompanies = function () {
+        this.companies = this.companyService.getCompanies();
     };
     return CompanyPageComponent;
 }());
